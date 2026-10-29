@@ -571,6 +571,34 @@ function renderInsightsView() {
       })
       .join("");
   }
+
+  // Render Next-Gen Typing DNA & Biometric Passport
+  if (typeof TypingDNA !== "undefined") {
+    const dna = TypingDNA.computeDimensions(AppState.sessions);
+    TypingDNA.renderRadar("dna-radar-canvas", dna);
+
+    const setField = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    setField("dna-archetype-name", dna.archetype.title);
+    setField("dna-archetype-text", dna.archetype.desc);
+    setField("dna-badge-pill", dna.archetype.code);
+    setField("dna-class-pill", dna.archetype.badge);
+
+    setField("dna-stat-vel", dna.velocity);
+    setField("dna-stat-acc", `${dna.precision}%`);
+    setField("dna-stat-cns", dna.consistency);
+    setField("dna-stat-stm", dna.stamina);
+    setField("dna-stat-dex", dna.dexterity);
+    setField("dna-stat-rec", dna.recovery);
+
+    const exportBtn = document.getElementById("dna-export-passport-btn");
+    if (exportBtn) {
+      exportBtn.onclick = () => TypingDNA.exportPassportPNG(dna);
+    }
+  }
 }
 
 /**
@@ -823,6 +851,11 @@ function openSessionModal(sessionId) {
     modal.hidden = false;
     modal.setAttribute("aria-hidden", "false");
   }
+
+  // Mount VCR Keystroke Autopsy Replay
+  if (typeof ReplayEngine !== "undefined") {
+    ReplayEngine.mount("modal-replay-container", session);
+  }
 }
 
 /**
@@ -835,6 +868,10 @@ function closeSessionModal() {
     modal.setAttribute("aria-hidden", "true");
   }
   AppState.selectedSessionId = null;
+
+  if (typeof ReplayEngine !== "undefined") {
+    ReplayEngine.stop();
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -935,14 +972,20 @@ function renderResultsPanel(r) {
 
 /** Saves settings from the form to localStorage. */
 function saveSettings() {
-  const themeSel    = document.getElementById("setting-theme");
-  const fontSel     = document.getElementById("setting-font");
-  const soundToggle = document.getElementById("setting-sound");
+  const themeSel      = document.getElementById("setting-theme");
+  const fontSel       = document.getElementById("setting-font");
+  const soundToggle   = document.getElementById("setting-sound");
+  const soundProfile  = document.getElementById("setting-sound-profile");
+  const powerToggle   = document.getElementById("setting-power-mode");
+  const ghostToggle   = document.getElementById("setting-ghost-racer");
 
   const settings = {
-    theme: themeSel  ? themeSel.value  : "dark",
-    font:  fontSel   ? fontSel.value   : "inter",
-    sound: soundToggle ? soundToggle.checked : false,
+    theme:        themeSel      ? themeSel.value      : "dark",
+    font:         fontSel       ? fontSel.value       : "inter",
+    sound:        soundToggle   ? soundToggle.checked : false,
+    soundProfile: soundProfile  ? soundProfile.value  : "thock",
+    powerMode:    powerToggle   ? powerToggle.checked : true,
+    ghostRacer:   ghostToggle   ? ghostToggle.checked : true,
   };
 
   try {
@@ -964,21 +1007,28 @@ function loadAndApplySettings() {
     applySettings(settings);
 
     // Restore UI controls
-    const themeSel    = document.getElementById("setting-theme");
-    const fontSel     = document.getElementById("setting-font");
-    const soundToggle = document.getElementById("setting-sound");
+    const themeSel     = document.getElementById("setting-theme");
+    const fontSel      = document.getElementById("setting-font");
+    const soundToggle  = document.getElementById("setting-sound");
+    const soundProfile = document.getElementById("setting-sound-profile");
+    const powerToggle  = document.getElementById("setting-power-mode");
+    const ghostToggle  = document.getElementById("setting-ghost-racer");
+
     if (themeSel  && settings.theme) themeSel.value = settings.theme;
     if (fontSel   && settings.font)  fontSel.value  = settings.font;
     if (soundToggle && typeof settings.sound === "boolean") {
       soundToggle.checked = settings.sound;
     }
+    if (soundProfile && settings.soundProfile) soundProfile.value = settings.soundProfile;
+    if (powerToggle && settings.powerMode !== undefined) powerToggle.checked = !!settings.powerMode;
+    if (ghostToggle && settings.ghostRacer !== undefined) ghostToggle.checked = !!settings.ghostRacer;
   } catch (e) {
     console.warn("TypeScope: could not restore settings.", e);
   }
 }
 
 /**
- * Applies theme and font settings to the document root.
+ * Applies theme and font settings to the document root and next-gen engines.
  * @param {Object} settings
  */
 function applySettings(settings) {
@@ -987,6 +1037,116 @@ function applySettings(settings) {
   }
   if (settings.font) {
     document.documentElement.dataset.font = settings.font;
+  }
+  if (typeof PowerMode !== "undefined" && settings.powerMode !== undefined) {
+    PowerMode.setEnabled(settings.powerMode);
+  }
+  if (typeof EngineState !== "undefined" && settings.ghostRacer !== undefined) {
+    EngineState.ghostEnabled = !!settings.ghostRacer;
+    const testGhostToggle = document.getElementById("ghost-toggle");
+    if (testGhostToggle) testGhostToggle.checked = !!settings.ghostRacer;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   NEXT-GEN POWER-USER HELPERS & DISPATCHERS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function switchTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  const themeSel = document.getElementById("setting-theme");
+  if (themeSel) themeSel.value = theme;
+  try {
+    const raw = localStorage.getItem("typescope_settings");
+    const s = raw ? JSON.parse(raw) : {};
+    s.theme = theme;
+    localStorage.setItem("typescope_settings", JSON.stringify(s));
+  } catch {}
+  showNotification(`Theme set to ${capitalise(theme)}`, "info");
+}
+
+const THEME_LIST = ["dark", "cyberpunk", "tokyo-night", "paperwhite", "aurora", "light"];
+function cycleThemes() {
+  const current = document.documentElement.dataset.theme || "dark";
+  const nextIdx = (THEME_LIST.indexOf(current) + 1) % THEME_LIST.length;
+  switchTheme(THEME_LIST[nextIdx]);
+}
+
+window.typescopeZenMode = false;
+function toggleZenMode() {
+  window.typescopeZenMode = !window.typescopeZenMode;
+  const zenBtns = [document.getElementById("topbar-zen-btn"), document.getElementById("zen-toggle-btn")];
+  zenBtns.forEach((b) => {
+    if (b) b.classList.toggle("zen-btn-active", window.typescopeZenMode);
+  });
+  if (typeof EngineState !== "undefined" && EngineState.status === "running") {
+    document.body.classList.toggle("zen-mode-active", window.typescopeZenMode);
+  }
+  showNotification(`Zen Hyper-Focus ${window.typescopeZenMode ? "Enabled" : "Disabled"}`, "info");
+}
+
+function togglePowerMode() {
+  if (typeof PowerMode === "undefined") return;
+  PowerMode.setEnabled(!PowerMode.enabled);
+  const toggle = document.getElementById("setting-power-mode");
+  if (toggle) toggle.checked = PowerMode.enabled;
+  showNotification(`Power Mode ${PowerMode.enabled ? "Active" : "Disabled"}`, "info");
+}
+
+function toggleGhostRacer() {
+  if (typeof EngineState === "undefined") return;
+  EngineState.ghostEnabled = !EngineState.ghostEnabled;
+  const t1 = document.getElementById("ghost-toggle");
+  const t2 = document.getElementById("setting-ghost-racer");
+  if (t1) t1.checked = EngineState.ghostEnabled;
+  if (t2) t2.checked = EngineState.ghostEnabled;
+  showNotification(`Ghost Pace Hologram ${EngineState.ghostEnabled ? "Active" : "Disabled"}`, "info");
+}
+
+function toggle3DKeyboard() {
+  if (typeof HeatmapModule === "undefined") return;
+  HeatmapModule.isIsometric = !HeatmapModule.isIsometric;
+  HeatmapModule.render("heatmap-container", AppState.sessions);
+  showNotification(`Keyboard 3D Isometric View ${HeatmapModule.isIsometric ? "On" : "Off"}`, "info");
+}
+
+function setTestDuration(seconds) {
+  const sel = document.getElementById("duration-select");
+  if (sel) {
+    sel.value = seconds;
+    sel.dispatchEvent(new Event("change"));
+  }
+  showNotification(`Duration set to ${seconds}s`, "info");
+}
+
+function setTestDifficulty(diff) {
+  const sel = document.getElementById("difficulty-select");
+  if (sel) {
+    sel.value = diff;
+    sel.dispatchEvent(new Event("change"));
+  }
+  showNotification(`Difficulty set to ${capitalise(diff)}`, "info");
+}
+
+function setSoundProfile(profile) {
+  try {
+    const raw = localStorage.getItem("typescope_settings");
+    const s = raw ? JSON.parse(raw) : {};
+    s.soundProfile = profile;
+    localStorage.setItem("typescope_settings", JSON.stringify(s));
+    const sel = document.getElementById("setting-sound-profile");
+    if (sel) sel.value = profile;
+    showNotification(`Acoustic Profile: ${capitalise(profile)}`, "info");
+  } catch {}
+}
+
+function toggleSoundFX() {
+  const toggle = document.getElementById("setting-sound");
+  if (toggle) {
+    toggle.checked = !toggle.checked;
+    const saveBtn = document.getElementById("settings-save-btn");
+    if (saveBtn) saveBtn.click();
+    showNotification(`Sound Effects ${toggle.checked ? "Enabled" : "Muted"}`, "info");
   }
 }
 
@@ -1281,11 +1441,48 @@ function wireEvents() {
     });
   }
 
-  // ── Keyboard shortcut: Escape closes modal & mobile nav
+  // ── Next-Gen Topbar Buttons
+  const topbarCmdBtn = document.getElementById("topbar-cmd-btn");
+  if (topbarCmdBtn) topbarCmdBtn.addEventListener("click", () => {
+    if (typeof CommandPalette !== "undefined") CommandPalette.toggle();
+  });
+
+  const topbarZenBtn = document.getElementById("topbar-zen-btn");
+  if (topbarZenBtn) topbarZenBtn.addEventListener("click", toggleZenMode);
+
+  const zenToggleBtn = document.getElementById("zen-toggle-btn");
+  if (zenToggleBtn) zenToggleBtn.addEventListener("click", toggleZenMode);
+
+  const themeCycleBtn = document.getElementById("topbar-theme-cycle-btn");
+  if (themeCycleBtn) themeCycleBtn.addEventListener("click", cycleThemes);
+
+  // ── Ghost Racer toggle in test controls
+  const ghostToggle = document.getElementById("ghost-toggle");
+  if (ghostToggle) {
+    ghostToggle.addEventListener("change", (e) => {
+      if (typeof EngineState !== "undefined") {
+        EngineState.ghostEnabled = e.target.checked;
+        const setToggle = document.getElementById("setting-ghost-racer");
+        if (setToggle) setToggle.checked = e.target.checked;
+      }
+    });
+  }
+
+  // ── Keyboard shortcuts: Escape closes modal & nav; 'Z' toggles Zen mode
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeSessionModal();
       closeMobileNav();
+      if (window.typescopeZenMode) toggleZenMode();
+    } else if (
+      e.key.toLowerCase() === "z" &&
+      !e.metaKey &&
+      !e.ctrlKey &&
+      !e.altKey &&
+      document.activeElement.tagName !== "INPUT" &&
+      document.activeElement.tagName !== "TEXTAREA"
+    ) {
+      toggleZenMode();
     }
   });
 }
@@ -1300,6 +1497,11 @@ function wireEvents() {
 function init() {
   // Load persisted sessions safely from storage layer
   AppState.sessions = loadSessions();
+
+  // Initialize Next-Gen UI/UX Engines
+  if (typeof CommandPalette !== "undefined") CommandPalette.init();
+  if (typeof PowerMode !== "undefined") PowerMode.init("passage-card-wrapper");
+  if (typeof CadenceSeismograph !== "undefined") CadenceSeismograph.init("seismograph-canvas");
 
   // Wire all global event listeners
   wireEvents();
@@ -1325,7 +1527,7 @@ function init() {
   // Navigate to default section
   navigateTo("overview");
 
-  console.log("TypeScope initialized successfully with Analytics & Insights Engine.");
+  console.log("TypeScope v1.1 initialized successfully with Next-Gen UI/UX Engines.");
 }
 
 // Bootstrap on DOMContentLoaded

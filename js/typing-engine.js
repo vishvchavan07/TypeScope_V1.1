@@ -27,9 +27,14 @@
 "use strict";
 
 /* ─────────────────────────────────────────────────────────────────────────────
+/* ─────────────────────────────────────────────────────────────────────────────
    SOUND EFFECTS HELPER (Web Audio API Synthesizer)
-   Pure client-side zero-dependency audio synthesizer.
-   Only active if "Sound Effects" is enabled in Settings.
+   Features 5 selectable acoustic profiles:
+     1. "thock"    — Deep, lubricated tactile Holy Panda / Gateron mechanical sound
+     2. "buckling" — Vintage IBM Model M buckling spring metallic clack
+     3. "synth"    — Cyberpunk harmonic synth pitch scaling with typing velocity
+     4. "bubble"   — Gentle ASMR water drop pops
+     5. "classic"  — Clean electronic sine tone
    ───────────────────────────────────────────────────────────────────────────── */
 const SoundFX = {
   ctx: null,
@@ -43,34 +48,129 @@ const SoundFX = {
     }
     return this.ctx;
   },
-  isEnabled() {
+  getSettings() {
     try {
       const raw = localStorage.getItem("typescope_settings");
-      if (!raw) return false;
+      if (!raw) return { sound: false, soundProfile: "thock" };
       const s = JSON.parse(raw);
-      return !!s.sound;
+      return { sound: !!s.sound, soundProfile: s.soundProfile || "thock" };
     } catch {
-      return false;
+      return { sound: false, soundProfile: "thock" };
     }
+  },
+  isEnabled() {
+    return this.getSettings().sound;
   },
   playKey(isError) {
     if (!this.isEnabled()) return;
     try {
       const ctx = this.getAudioContext();
       if (!ctx) return;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
+      const { soundProfile } = this.getSettings();
       const now = ctx.currentTime;
+
       if (isError) {
+        // Error audio feedback across profiles
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
         osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.setValueAtTime(130, now);
+        osc.frequency.linearRampToValueAtTime(80, now + 0.09);
         gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
         osc.start(now);
-        osc.stop(now + 0.08);
+        osc.stop(now + 0.09);
+        return;
+      }
+
+      if (soundProfile === "thock") {
+        // Deep lubed mechanical switch: punchy low-frequency resonance + high transient
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(160 + (Math.random() * 20 - 10), now);
+        osc.frequency.exponentialRampToValueAtTime(55, now + 0.045);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.045);
+
+        // Subtle click transient
+        const click = ctx.createOscillator();
+        const clickGain = ctx.createGain();
+        click.type = "sine";
+        click.frequency.setValueAtTime(850, now);
+        clickGain.gain.setValueAtTime(0.03, now);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.012);
+        click.connect(clickGain);
+        clickGain.connect(ctx.destination);
+        click.start(now);
+        click.stop(now + 0.012);
+
+      } else if (soundProfile === "buckling") {
+        // Metallic snap (2800Hz) followed by hollow barrel spring pop
+        const click = ctx.createOscillator();
+        const clickGain = ctx.createGain();
+        click.type = "square";
+        click.frequency.setValueAtTime(2800, now);
+        clickGain.gain.setValueAtTime(0.035, now);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.015);
+        click.connect(clickGain);
+        clickGain.connect(ctx.destination);
+        click.start(now);
+        click.stop(now + 0.015);
+
+        const ping = ctx.createOscillator();
+        const pingGain = ctx.createGain();
+        ping.type = "triangle";
+        ping.frequency.setValueAtTime(540, now + 0.005);
+        pingGain.gain.setValueAtTime(0.06, now + 0.005);
+        pingGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        ping.connect(pingGain);
+        pingGain.connect(ctx.destination);
+        ping.start(now + 0.005);
+        ping.stop(now + 0.04);
+
+      } else if (soundProfile === "synth") {
+        // Pitch scales dynamically with typing speed
+        const currentWpm = EngineState.currentNetWPM || 40;
+        const baseFreq = 340 + Math.min(600, currentWpm * 6);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.linearRampToValueAtTime(baseFreq * 1.08, now + 0.04);
+        gain.gain.setValueAtTime(0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.04);
+
+      } else if (soundProfile === "bubble") {
+        // ASMR pitch-swept pop
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(620, now);
+        osc.frequency.exponentialRampToValueAtTime(260, now + 0.03);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.03);
+
       } else {
+        // Classic sine
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
         osc.type = "sine";
         osc.frequency.setValueAtTime(700, now);
         gain.gain.setValueAtTime(0.035, now);
@@ -149,6 +249,18 @@ const EngineState = {
 
   /** Callback invoked when the test finishes: fn(results) */
   onFinish: null,
+
+  /** Frame-accurate keystroke timeline for VCR autopsy replay */
+  keystrokeEvents: [],
+
+  /** Current live net WPM tracked for dynamic audio pitch */
+  currentNetWPM: 0,
+
+  /** Target WPM pace for Ghost Racer (default 60 WPM or user's PB) */
+  targetWPM: 60,
+
+  /** Whether the Ghost Racer hologram is enabled */
+  ghostEnabled: true,
 };
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -318,6 +430,13 @@ function beginTest() {
   EngineState.metricsInterval   = null;
   EngineState.errorMap          = {};
   EngineState.errorCategories   = { letters: 0, punctuation: 0, digits: 0, spaces: 0, other: 0 };
+  EngineState.keystrokeEvents   = [];
+  EngineState.currentNetWPM     = 0;
+
+  // Reset next-gen modules for fresh test
+  if (typeof PowerMode !== "undefined") PowerMode.reset();
+  if (typeof CadenceSeismograph !== "undefined") CadenceSeismograph.reset();
+  document.body.classList.remove("zen-mode-active");
 
   // Reset rhythm tracking for this new test
   if (typeof RhythmModule !== "undefined" && RhythmModule.reset) {
@@ -380,7 +499,9 @@ function onInput() {
 
     // Track errors on newly typed characters
     let hasError = false;
+    let expectedChar = "";
     for (let i = prevLen; i < newTyped.length; i++) {
+      expectedChar = target[i] || "";
       if (i < target.length && newTyped[i] !== target[i]) {
         hasError = true;
         const expected = target[i];
@@ -400,6 +521,27 @@ function onInput() {
       }
     }
     SoundFX.playKey(hasError);
+
+    // Record timeline event for VCR autopsy replay
+    EngineState.keystrokeEvents.push({
+      time: EngineState.startTime ? Date.now() - EngineState.startTime : 0,
+      char: newTyped[newTyped.length - 1],
+      expected: expectedChar,
+      isError: hasError,
+      index: newTyped.length - 1,
+    });
+
+    // Next-Gen Feature Hooks: Particles, Seismograph, and 3D Keyboard
+    if (typeof PowerMode !== "undefined") {
+      const activeSpan = DOM.passageDisplay ? DOM.passageDisplay.querySelector(".cursor") : null;
+      PowerMode.onKey({ isError: hasError, targetSpan: activeSpan });
+    }
+    if (typeof CadenceSeismograph !== "undefined") {
+      CadenceSeismograph.recordKeystroke(hasError);
+    }
+    if (typeof HeatmapModule !== "undefined" && HeatmapModule.strikeKey && expectedChar) {
+      HeatmapModule.strikeKey(expectedChar);
+    }
   }
 
   EngineState.typedText = newTyped;
@@ -444,6 +586,7 @@ function onKeyDown(e) {
  *   "incorrect" — typed[i] !== target[i]  (includes spaces)
  *   "pending"   — not yet reached
  *   "cursor"    — applied additionally to the next character to type
+ *   "ghost-cursor" — Ghost Racer pace car marker
  *
  * Called after every input event for real-time visual feedback.
  */
@@ -454,10 +597,16 @@ function updateCharHighlights() {
   const spans  = DOM.passageDisplay.querySelectorAll(".char");
   const len    = spans.length;
 
+  // Calculate Ghost Racer character position
+  const ghostWpm = EngineState.targetWPM || 60;
+  const ghostCharIdx = EngineState.ghostEnabled && EngineState.status === "running"
+    ? Math.floor((EngineState.elapsedSeconds / 60) * ghostWpm * 5)
+    : -1;
+
   for (let i = 0; i < len; i++) {
     const span = spans[i];
     // Reset all state classes first
-    span.classList.remove("correct", "incorrect", "pending", "cursor");
+    span.classList.remove("correct", "incorrect", "pending", "cursor", "ghost-cursor");
 
     if (i < typed.length) {
       // Already typed
@@ -468,6 +617,30 @@ function updateCharHighlights() {
     } else {
       // Not yet reached
       span.classList.add("pending");
+    }
+
+    // Ghost Racer indicator
+    if (i === ghostCharIdx) {
+      span.classList.add("ghost-cursor");
+    }
+  }
+
+  // Update Ghost HUD Delta Pill
+  const ghostPill = document.getElementById("ghost-delta-pill");
+  if (ghostPill) {
+    if (EngineState.status === "running" && EngineState.ghostEnabled && ghostCharIdx >= 0) {
+      ghostPill.style.display = "inline-flex";
+      const diffChars = typed.length - ghostCharIdx;
+      const diffWpm = Math.round(diffChars / 5);
+      if (diffWpm >= 0) {
+        ghostPill.className = "ghost-delta-pill ghost-delta-ahead";
+        ghostPill.innerHTML = `🏎️ +${diffWpm} Ahead`;
+      } else {
+        ghostPill.className = "ghost-delta-pill ghost-delta-behind";
+        ghostPill.innerHTML = `🏎️ ${diffWpm} Behind`;
+      }
+    } else {
+      ghostPill.style.display = "none";
     }
   }
 
@@ -490,6 +663,11 @@ function startTimers() {
   if (EngineState.status === "running") return; // already started — no double-start
   EngineState.status    = "running";
   EngineState.startTime = Date.now();
+
+  // Zen Focus Mode activation
+  if (window.typescopeZenMode) {
+    document.body.classList.add("zen-mode-active");
+  }
 
   // ── Countdown tick — runs every 1 second
   EngineState.countdownInterval = setInterval(() => {
@@ -608,6 +786,7 @@ function finishTest(reason) {
 
   stopAllTimers();
   SoundFX.playCompletion();
+  document.body.classList.remove("zen-mode-active");
 
   // Freeze the input — no more typing
   if (DOM.typingInput) {
@@ -652,6 +831,8 @@ function finishTest(reason) {
     reason:            reason,
     passageId:         EngineState.passage ? EngineState.passage.id : "unknown",
     passageTitle:      EngineState.passage ? EngineState.passage.title : "Typing Passage",
+    passageText:       EngineState.passage ? EngineState.passage.text : "",
+    keystrokeEvents:   [...EngineState.keystrokeEvents],
     errorCategories:   { ...EngineState.errorCategories },
     errorMap:          { ...EngineState.errorMap },
     rhythmSnapshots:   (typeof RhythmModule !== "undefined" && RhythmModule.getSnapshots)
@@ -662,6 +843,11 @@ function finishTest(reason) {
   // Invoke the app-level callback so app.js can save and display results
   if (typeof EngineState.onFinish === "function") {
     EngineState.onFinish(results);
+  }
+
+  // Mount instant VCR replay on results card if present
+  if (typeof ReplayEngine !== "undefined" && document.getElementById("results-replay-container")) {
+    ReplayEngine.mount("results-replay-container", results);
   }
 }
 

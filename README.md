@@ -56,6 +56,18 @@ Modern typing tests often provide only instantaneous WPM scores without actionab
 - **Difficulty Gap:** Diagnoses syntax/punctuation bottlenecks when moving to advanced passages.
 - **Typing Persona Classifier:** Synthesizes overall metrics into profiles such as *Precision Virtuoso*, *Methodical Typist*, *Speed Sprinter*, *Rising Performer*, or *Balanced Typist*.
 
+### 🚀 Next-Gen UI/UX Innovations (v1.1)
+- **⚡ Spotlight Command Palette (`Cmd + K` / `Ctrl + K`):** Keyboard-driven power-user overlay for instant action dispatch, theme switching, duration tweaking, and quick navigation.
+- **💥 Power Mode & Combo Overdrive:** Real-time particle spark physics radiating from the active caret, with combo multiplier tiers (`x1.5 Quickening`, `x2.0 On Fire`, `x3.0 Hyperdrive`, `x4.0 GODLIKE`) and screen-shake dynamics.
+- **🏎️ Ghost Racer Hologram:** Live shadow pace car cursor sweeping through the passage, featuring real-time HUD delta tracking (`+8 WPM Ahead` / `-3 WPM Behind`).
+- **📈 Real-Time Cadence Seismograph & EKG Monitor:** Live 60 FPS oscilloscope graphing inter-keystroke intervals (IKIs) in milliseconds, visually highlighting flow rhythm vs. cognitive hesitation spikes.
+- **🧘 Zen Hyper-Focus Mode (Shortcut `Z`):** Immersive typewriter viewport that gracefully dims and blurs surrounding UI to isolate the active typing line.
+- **🧊 3D Isometric Keyboard & Topography:** Perspective-tilted 3D keyboard where keys physically extrude higher based on error frequency and light up on key strikes.
+- **📼 VCR Keystroke Autopsy & Replay:** Interactive playback scrubber (0.5x, 1x, 2x, 4x) reproducing past typing sessions character-by-character with mistake flashes.
+- **🧬 Typing DNA Radar & Holographic Passport ID Card:** 6-axis biometric radar chart (Velocity, Consistency, Precision, Stamina, Dexterity, Recovery) with exportable high-res holographic PNG card.
+- **🎨 6 Curated High-Aesthetic Themes:** *Dark Midnight*, *Cyberpunk 2077 Neon*, *Tokyo Night*, *Paperwhite E-Ink*, *Aurora Glassmorphism*, and *Light Studio*.
+- **🔊 Multi-Profile Acoustic Synthesizer:** Pure Web Audio API synthesized switch acoustics including *Thocky Mechanical (Holy Panda)*, *IBM Model M Buckling Spring*, *Cyberpunk Speed Synth*, *Lo-Fi Bubble*, and *Classic Sine*.
+
 ---
 
 ## 3. Technologies Used

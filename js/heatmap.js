@@ -177,7 +177,7 @@ const HeatmapModule = {
     container.innerHTML = `
       <div class="heatmap-wrapper">
 
-        <!-- Stats bar -->
+        <!-- Stats bar with 3D Toggle -->
         <div class="heatmap-stats-bar">
           <div class="heatmap-stat">
             <span class="heatmap-stat-value">${totalErrors.toLocaleString()}</span>
@@ -195,27 +195,64 @@ const HeatmapModule = {
             <span class="heatmap-stat-value" style="color:var(--clr-accent-red);">${top5[0] ? this._displayKey(top5[0][0]) : "—"}</span>
             <span class="heatmap-stat-label">Hardest Key</span>
           </div>
+          <div style="margin-left:auto;">
+            <button class="btn btn-secondary btn-sm" id="heatmap-3d-toggle-btn" type="button">
+              ${this.isIsometric ? "📐 Flat 2D View" : "🧊 Isometric 3D View"}
+            </button>
+          </div>
         </div>
 
-        <!-- Keyboard -->
-        <div class="heatmap-keyboard-container" role="img" aria-label="Keyboard error heatmap — redder keys indicate more errors">
+        <!-- Keyboard Container -->
+        <div class="heatmap-keyboard-container ${this.isIsometric ? "heatmap-keyboard-isometric" : ""}"
+             id="heatmap-keyboard-wrap"
+             role="img"
+             aria-label="Keyboard error heatmap — redder and higher elevated keys indicate more errors">
           ${this._buildKeyboard(aggregated, maxErrors)}
         </div>
 
         <!-- Gradient legend -->
         <div class="heatmap-legend" aria-hidden="true">
-          <span class="heatmap-legend-label">Fewer errors</span>
+          <span class="heatmap-legend-label">Fewer errors (Flat)</span>
           <div class="heatmap-legend-gradient"></div>
-          <span class="heatmap-legend-label">More errors</span>
+          <span class="heatmap-legend-label">More errors (3D Elevated)</span>
         </div>
 
         <!-- Top keys breakdown -->
         ${top5.length > 0 ? this._buildTopKeys(top5, totalErrors) : ""}
       </div>
     `;
+
+    // Hook 3D toggle button
+    const toggleBtn = document.getElementById("heatmap-3d-toggle-btn");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        this.isIsometric = !this.isIsometric;
+        this.render(containerId, sessions);
+      });
+    }
   },
 
-  /** Builds the HTML keyboard with colored keys. */
+  isIsometric: false,
+
+  /**
+   * Visually flashes a keycap when typed in real time
+   * @param {string} char
+   */
+  strikeKey(char) {
+    if (!char) return;
+    const key = char.toLowerCase();
+    const keyEl = document.querySelector(`.heatmap-key[data-key="${key}"]`);
+    if (keyEl) {
+      keyEl.classList.remove("key-struck");
+      void keyEl.offsetWidth;
+      keyEl.classList.add("key-struck");
+      setTimeout(() => {
+        if (keyEl) keyEl.classList.remove("key-struck");
+      }, 160);
+    }
+  },
+
+  /** Builds the HTML keyboard with colored keys and 3D elevation. */
   _buildKeyboard(aggregated, maxErrors) {
     const rows = KEYBOARD_ROWS.map((row) => {
       const keys = row.map((kd) => {
@@ -226,14 +263,16 @@ const HeatmapModule = {
         const bg = hmIntensityToColor(intensity);
         const textColor = intensity > 0.55 ? "#fff" : "#b0bfcf";
         const flexStyle = kd.w && kd.w > 1 ? `flex:${kd.w};` : "flex:1;";
+        const keyElev = 4 + Math.round(intensity * 12);
         const tooltip = isFunc
           ? kd.label
           : count > 0
             ? `${this._displayKey(kd.key)}: ${count} error${count !== 1 ? "s" : ""}`
             : `${this._displayKey(kd.key)}: no errors`;
 
-        return `<div class="heatmap-key${isFunc ? " heatmap-key-func" : ""}"
-                     style="${flexStyle} background:${bg}; color:${textColor};"
+        return `<div class="heatmap-key heatmap-key-3d${isFunc ? " heatmap-key-func" : ""}"
+                     data-key="${errKey}"
+                     style="${flexStyle} background:${bg}; color:${textColor}; --key-elev:${keyElev}px;"
                      title="${tooltip}"
                      aria-label="${tooltip}">
           <span class="heatmap-key-label">${kd.label}</span>
