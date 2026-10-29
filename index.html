@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-font="inter">
+<head>
+  <!-- ── Meta ─────────────────────────────────────────────── -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="TypeScope — Typing Performance Analytics & Intelligence System. Track WPM, accuracy, and progress with a modern analytics dashboard." />
+  <meta name="author" content="SIP Project — Computer Engineering" />
+
+  <title>TypeScope | Typing Performance Analytics</title>
+
+  <!-- ── Google Fonts ─────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- ── Stylesheets ──────────────────────────────────────── -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     APP SHELL
+     ════════════════════════════════════════════════════════════════════════════ -->
+<div class="app-shell">
+
+  <!-- ══════════════════════════════════════════════════════
+       SIDEBAR
+       ══════════════════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="brand-icon" aria-hidden="true">⌨️</div>
+      <div class="brand-text">
+        <span class="brand-name">TypeScope</span>
+        <span class="brand-tagline">Analytics System</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav" aria-label="Sections">
+      <span class="nav-group-label">Dashboard</span>
+
+      <a href="#overview"
+         class="nav-link"
+         id="nav-overview"
+         data-section="overview"
+         aria-current="page"
+         role="link">
+        <span class="nav-icon" aria-hidden="true">🏠</span>
+        Overview
+      </a>
+
+      <a href="#typing-test"
+         class="nav-link"
+         id="nav-typing-test"
+         data-section="typing-test"
+         aria-current="false"
+         role="link">
+        <span class="nav-icon" aria-hidden="true">⌨️</span>
+        Typing Test
+      </a>
+
+      <span class="nav-group-label" style="margin-top:0.75rem;">Analysis</span>
+
+      <a href="#analytics"
+         class="nav-link"
+         id="nav-analytics"
+         data-section="analytics"
+         aria-current="false"
+         role="link">
+        <span class="nav-icon" aria-hidden="true">📊</span>
+        Analytics Lab
+      </a>
+
+      <a href="#history"
+         class="nav-link"
+         id="nav-history"
+         data-section="history"
+         aria-current="false"
+         role="link">
+        <span class="nav-icon" aria-hidden="true">📋</span>
+        Session History
+      </a>
+
+      <a href="#insights"
+         class="nav-link"
+         id="nav-insights"
+         data-section="insights"
+         aria-current="false"
+         role="link">
+        <span class="nav-icon" aria-hidden="true">💡</span>
+        Insights
+      </a>
+
+      <a href="#advanced"
+         class="nav-link"
+         id="nav-advanced"
+         data-section="advanced"
+         aria-current="false"
+         role="link">
+        <span class="nav-icon" aria-hidden="true">🔬</span>
+        Advanced
+      </a>
+
+      <span class="nav-group-label" style="margin-top:0.75rem;">System</span>
+
+      <a href="#settings"
+         class="nav-link"
+         id="nav-settings"
+         data-section="settings"
+         aria-current="false"
+         role="link">
+        <span class="nav-icon" aria-hidden="true">⚙️</span>
+        Settings
+      </a>
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <p class="sidebar-version">v1.0 Final &nbsp;·&nbsp; SIP 2025-26</p>
+    </div>
+  </aside><!-- /sidebar -->
+
+
+  <!-- ══════════════════════════════════════════════════════
+       TOPBAR
+       ══════════════════════════════════════════════════════ -->
+  <header class="topbar" role="banner">
+    <div class="topbar-left">
+      <!-- Hamburger (mobile only) -->
+      <button class="hamburger-btn" id="hamburger-btn"
+              aria-label="Open navigation menu"
+              aria-expanded="false"
+              aria-controls="sidebar">
+        ☰
+      </button>
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <span class="breadcrumb-home">TypeScope</span>
+        <span class="breadcrumb-sep" aria-hidden="true">›</span>
+        <span class="breadcrumb-current" id="breadcrumb-section">Overview</span>
+      </nav>
+    </div>
+
+    <div class="topbar-right">
+      <span class="topbar-badge">v1.0 Final</span>
+    </div>
+  </header><!-- /topbar -->
+
+
+  <!-- ══════════════════════════════════════════════════════
+       MAIN CONTENT
+       ══════════════════════════════════════════════════════ -->
+  <main class="main-content" id="main-content" aria-live="polite">
+
+
+    <!-- ────────────────────────────────────────────────────
+         SECTION 1 — OVERVIEW
+         ──────────────────────────────────────────────────── -->
+    <section class="section" id="section-overview" aria-labelledby="overview-heading">
+
+      <!-- Hero Banner -->
+      <div class="overview-hero">
+        <div class="hero-content">
+          <div class="hero-phase-badge">
+            <span>🔬</span>
+            <span>SIP Project — Computer Engineering</span>
+          </div>
+
+          <h1 class="hero-title" id="overview-heading">
+            Welcome to <span class="hero-title-accent">TypeScope</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            A Typing Performance Analytics &amp; Intelligence System built on
+            JavaScript Essentials 1, JavaScript Essentials 2, and Introduction to
+            Data Analytics Essentials. Measure, analyse, and improve your typing
+            performance with real data.
+          </p>
+
+          <div class="hero-courses" aria-label="Courses covered">
+            <span class="course-tag course-tag-blue">JS Essentials 1</span>
+            <span class="course-tag course-tag-violet">JS Essentials 2</span>
+            <span class="course-tag course-tag-cyan">Data Analytics Essentials</span>
+          </div>
+
+          <button class="btn btn-primary btn-lg" id="hero-start-btn" type="button">
+            ⌨️&nbsp;&nbsp;Start Typing Test
+          </button>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="hero-art-icon">📈</div>
+        </div>
+      </div><!-- /overview-hero -->
+
+      <!-- Summary Stat Cards -->
+      <div class="stats-grid" aria-label="Performance summary">
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Avg WPM</span>
+            <div class="stat-icon stat-icon-blue" aria-hidden="true">⚡</div>
+          </div>
+          <div class="stat-value" id="card-avg-wpm">—</div>
+          <div class="stat-hint">Words per minute average</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Accuracy</span>
+            <div class="stat-icon stat-icon-green" aria-hidden="true">🎯</div>
+          </div>
+          <div class="stat-value" id="card-avg-acc">—</div>
+          <div class="stat-hint">Average accuracy rate</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Tests Done</span>
+            <div class="stat-icon stat-icon-violet" aria-hidden="true">✅</div>
+          </div>
+          <div class="stat-value" id="card-tests">—</div>
+          <div class="stat-hint">Completed test sessions</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Best WPM</span>
+            <div class="stat-icon stat-icon-amber" aria-hidden="true">🏆</div>
+          </div>
+          <div class="stat-value" id="card-best-wpm">—</div>
+          <div class="stat-hint">Personal best speed</div>
+        </div>
+      </div><!-- /stats-grid -->
+
+      <!-- Bottom: Chart + Recent Sessions -->
+      <div class="overview-bottom">
+
+        <!-- Performance Chart -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Performance Over Time</h2>
+              <p class="card-subtitle">Net WPM progression across sessions</p>
+            </div>
+          </div>
+          <div class="chart-placeholder" id="overview-chart-placeholder" role="img" aria-label="Performance chart — no data yet">
+            <div class="chart-placeholder-icon" aria-hidden="true">📈</div>
+            <p class="chart-placeholder-text">
+              Your WPM chart will appear here after you complete your first typing test.
+            </p>
+          </div>
+          <div class="chart-canvas-wrapper" id="overview-chart-wrapper" style="display:none; position:relative; height:240px; width:100%;">
+            <canvas id="chart-overview-wpm" aria-label="Overview WPM Progression Chart" role="img"></canvas>
+          </div>
+        </div>
+
+        <!-- Recent Sessions -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Recent Sessions</h2>
+              <p class="card-subtitle">Last 5 completed tests</p>
+            </div>
+          </div>
+          <div class="table-scroll" style="overflow-x:auto;">
+            <table class="data-table" aria-label="Recent sessions">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">WPM</th>
+                  <th scope="col">Accuracy</th>
+                  <th scope="col">Difficulty</th>
+                  <th scope="col">Duration</th>
+                </tr>
+              </thead>
+              <tbody id="recent-sessions-body">
+                <!-- Populated by app.js renderRecentSessions() -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /overview-bottom -->
+    </section><!-- /section-overview -->
+
+
+    <!-- ────────────────────────────────────────────────────
+         SECTION 2 — TYPING TEST  (Phase 2 — Live Engine)
+         ──────────────────────────────────────────────────── -->
+    <section class="section" id="section-typing-test" hidden aria-labelledby="test-heading">
+
+      <div class="section-header">
+        <h1 class="section-title" id="test-heading">Typing Test</h1>
+        <p class="section-desc">Select difficulty and duration, press <strong>Start Test</strong>, then begin typing. The timer starts on your first keystroke.</p>
+      </div>
+
+      <div class="test-layout">
+
+        <!-- Left: Controls + Passage -->
+        <div>
+          <!-- Controls row -->
+          <div class="test-controls" role="group" aria-label="Test configuration">
+
+            <div class="control-group">
+              <label class="control-label" for="difficulty-select">Difficulty</label>
+              <select class="control-select" id="difficulty-select" name="difficulty">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate" selected>Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="duration-select">Duration</label>
+              <select class="control-select" id="duration-select" name="duration">
+                <option value="30">30 s</option>
+                <option value="60" selected>60 s</option>
+                <option value="120">120 s</option>
+              </select>
+            </div>
+
+            <div style="margin-top:auto;">
+              <button class="btn btn-primary" id="start-test-btn" type="button">
+                &#9654;&nbsp; Start Test
+              </button>
+            </div>
+          </div><!-- /test-controls -->
+
+          <!-- ── Passage card wrapper (hidden when results are shown) ── -->
+          <div id="passage-card-wrapper">
+            <div class="card passage-card">
+              <div class="passage-meta">
+                <span class="passage-title-label">Passage &mdash; <span id="passage-title">Loading&hellip;</span></span>
+                <span class="badge badge-intermediate" id="passage-difficulty-badge">Intermediate</span>
+              </div>
+
+              <!-- Click-to-focus hint -->
+              <p class="passage-click-hint" id="passage-click-hint" aria-hidden="true">
+                Click here or press Start Test to begin typing
+              </p>
+
+              <!--
+                #passage-display: each character is a <span class="char pending|correct|incorrect [cursor]">
+                Rendered by typing-engine.js → renderPassage().
+                Clicking it focuses the hidden textarea on desktop and mobile.
+              -->
+              <div id="passage-display"
+                   class="passage-display-live"
+                   role="region"
+                   aria-label="Typing passage"
+                   tabindex="0"
+                   aria-describedby="passage-click-hint">
+                <!-- Populated by typing-engine.js -->
+              </div>
+
+              <!--
+                The actual input element. Visually hidden but always focusable
+                when a test is active. autocomplete/autocorrect/spellcheck
+                disabled to prevent browser interference.
+              -->
+              <textarea
+                id="typing-input"
+                class="typing-input-hidden"
+                aria-label="Type the passage here"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                tabindex="0"
+                disabled
+              ></textarea>
+            </div><!-- /passage-card -->
+          </div><!-- /passage-card-wrapper -->
+
+          <!-- ── Results panel (hidden until test finishes) ── -->
+          <div id="results-panel" class="card results-panel" hidden>
+            <div class="results-reason-banner" id="result-reason">Time Expired &#9201;</div>
+
+            <div class="results-metrics-grid">
+
+              <!-- Net WPM (primary) -->
+              <div class="result-metric result-metric-primary">
+                <div class="result-metric-value" id="result-net-wpm">0</div>
+                <div class="result-metric-label">Net WPM</div>
+                <div class="result-metric-hint">Gross &minus; error penalty</div>
+              </div>
+
+              <!-- Gross WPM -->
+              <div class="result-metric">
+                <div class="result-metric-value" id="result-gross-wpm">0</div>
+                <div class="result-metric-label">Gross WPM</div>
+                <div class="result-metric-hint">Total chars / 5 / min</div>
+              </div>
+
+              <!-- Accuracy -->
+              <div class="result-metric">
+                <div class="result-metric-value" id="result-accuracy">0%</div>
+                <div class="result-metric-label">Accuracy</div>
+                <div class="result-metric-hint">Correct / evaluated chars</div>
+              </div>
+
+              <!-- Errors -->
+              <div class="result-metric">
+                <div class="result-metric-value" id="result-errors">0</div>
+                <div class="result-metric-label">Errors</div>
+                <div class="result-metric-hint">Uncorrected at finish</div>
+              </div>
+
+              <!-- Keystrokes -->
+              <div class="result-metric">
+                <div class="result-metric-value" id="result-keystrokes">0</div>
+                <div class="result-metric-label">Keystrokes</div>
+                <div class="result-metric-hint">Chars typed (excl. backspace)</div>
+              </div>
+
+              <!-- Time -->
+              <div class="result-metric">
+                <div class="result-metric-value" id="result-time">0s</div>
+                <div class="result-metric-label">Time Elapsed</div>
+                <div class="result-metric-hint">From first keystroke</div>
+              </div>
+
+              <!-- Difficulty -->
+              <div class="result-metric">
+                <div class="result-metric-value result-metric-small" id="result-difficulty">Intermediate</div>
+                <div class="result-metric-label">Difficulty</div>
+                <div class="result-metric-hint">&nbsp;</div>
+              </div>
+
+            </div><!-- /results-metrics-grid -->
+
+            <!-- Action buttons -->
+            <div class="results-actions">
+              <button class="btn btn-primary btn-lg" id="restart-btn" type="button">
+                &#9654;&nbsp; New Test
+              </button>
+              <button class="btn btn-secondary" id="try-again-btn" type="button">
+                &#8635;&nbsp; Same Passage
+              </button>
+            </div>
+          </div><!-- /results-panel -->
+
+        </div><!-- /left col -->
+
+        <!-- Right: Timer + Live Metrics -->
+        <div>
+          <!-- Countdown Timer -->
+          <div class="timer-display" id="timer-display"
+               aria-label="Time remaining" aria-live="off">
+            01:00
+          </div>
+
+          <!-- Live metric mini-cards -->
+          <div class="live-metrics" aria-label="Live test metrics">
+
+            <div class="metric-mini-card">
+              <div class="metric-mini-label">Net WPM</div>
+              <div class="metric-mini-value" id="live-wpm" aria-label="Net WPM">--</div>
+            </div>
+
+            <div class="metric-mini-card">
+              <div class="metric-mini-label">Accuracy</div>
+              <div class="metric-mini-value" id="live-accuracy" aria-label="Accuracy">--</div>
+            </div>
+
+            <div class="metric-mini-card">
+              <div class="metric-mini-label">Keystrokes</div>
+              <div class="metric-mini-value" id="live-keystrokes" aria-label="Keystrokes">0</div>
+            </div>
+
+            <div class="metric-mini-card">
+              <div class="metric-mini-label">Errors</div>
+              <div class="metric-mini-value" id="live-errors" aria-label="Errors">0</div>
+            </div>
+          </div><!-- /live-metrics -->
+
+          <!-- Formula reference (viva aid) -->
+          <div class="formula-card">
+            <p class="formula-card-title">Metric Formulas</p>
+            <p class="formula-line"><strong>Gross</strong> = chars / 5 / min</p>
+            <p class="formula-line"><strong>Net</strong> = Gross &minus; errors/min</p>
+            <p class="formula-line"><strong>Accuracy</strong> = correct / evaluated &times; 100</p>
+          </div>
+        </div><!-- /right col -->
+
+      </div><!-- /test-layout -->
+    </section><!-- /section-typing-test -->
+
+
+    <!-- ────────────────────────────────────────────────────
+         SECTION 3 — ANALYTICS LAB
+         ──────────────────────────────────────────────────── -->
+    <section class="section" id="section-analytics" hidden aria-labelledby="analytics-heading">
+
+      <div class="section-header">
+        <h1 class="section-title" id="analytics-heading">Analytics Lab</h1>
+        <p class="section-desc">
+          Deep-dive performance charts, trend trajectories, and metrics calculated strictly from your saved test sessions.
+        </p>
+      </div>
+
+      <!-- Filter bar: Date range, difficulty, duration & CSV export -->
+      <div class="history-filter-bar analytics-filter-bar" role="group" aria-label="Filter analytics">
+        <div class="history-filter-group">
+          <label class="filter-label" for="analytics-filter-date">Date Range:</label>
+          <select class="control-select" id="analytics-filter-date" aria-label="Filter by date range">
+            <option value="all">All Time</option>
+            <option value="today">Today</option>
+            <option value="7days">Last 7 Days</option>
+            <option value="30days">Last 30 Days</option>
+          </select>
+        </div>
+
+        <div class="history-filter-group">
+          <label class="filter-label" for="analytics-filter-difficulty">Difficulty:</label>
+          <select class="control-select" id="analytics-filter-difficulty" aria-label="Filter by difficulty">
+            <option value="all">All Difficulties</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+
+        <div class="history-filter-group">
+          <label class="filter-label" for="analytics-filter-duration">Duration:</label>
+          <select class="control-select" id="analytics-filter-duration" aria-label="Filter by test duration">
+            <option value="all">All Durations</option>
+            <option value="30">30 s</option>
+            <option value="60">60 s</option>
+            <option value="120">120 s</option>
+          </select>
+        </div>
+
+        <div class="history-actions">
+          <span class="badge" id="analytics-count-badge">0 Sessions</span>
+          <button class="btn btn-secondary btn-sm" id="analytics-reset-btn" type="button" style="display:none;">Reset Filters</button>
+          <button class="btn btn-primary btn-sm" id="analytics-export-csv-btn" type="button" title="Export filtered session data to CSV">
+            📥 Export CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Key Metrics Summary Grid (5 Cards) -->
+      <div class="stats-grid analytics-stats-grid mb-6">
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Avg Net Speed</span>
+            <div class="stat-icon stat-icon-blue" aria-hidden="true">⚡</div>
+          </div>
+          <div class="stat-value" id="analytics-avg-wpm">—</div>
+          <div class="stat-hint">Filtered average Net WPM</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Avg Accuracy</span>
+            <div class="stat-icon stat-icon-green" aria-hidden="true">🎯</div>
+          </div>
+          <div class="stat-value" id="analytics-avg-acc">—</div>
+          <div class="stat-hint">Precision rate across tests</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Personal Best</span>
+            <div class="stat-icon stat-icon-amber" aria-hidden="true">🏆</div>
+          </div>
+          <div class="stat-value" id="analytics-best-wpm">—</div>
+          <div class="stat-hint">Highest recorded Net WPM</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Tests Done</span>
+            <div class="stat-icon stat-icon-violet" aria-hidden="true">📋</div>
+          </div>
+          <div class="stat-value" id="analytics-total-tests">—</div>
+          <div class="stat-hint">Completed test sessions</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-label">Pace Improvement</span>
+            <div class="stat-icon stat-icon-cyan" aria-hidden="true">📈</div>
+          </div>
+          <div class="stat-value" id="analytics-improvement" style="font-size:var(--fs-xl);">—</div>
+          <div class="stat-hint" id="analytics-improvement-hint">Earliest vs latest comparable</div>
+        </div>
+      </div>
+
+      <!-- Analytics Charts Grid -->
+      <div class="analytics-grid">
+
+        <!-- Chart 1: WPM Progression (Full Width) -->
+        <div class="card analytics-chart-full">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">WPM Progression Over Time</h2>
+              <p class="card-subtitle">Net WPM (solid) and Gross WPM (dashed) across completed sessions</p>
+            </div>
+          </div>
+          <div class="chart-canvas-wrapper" style="position:relative; height:280px; width:100%;">
+            <canvas id="chart-wpm-progression" aria-label="WPM Progression Chart" role="img"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Accuracy Trend -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Accuracy Trend</h2>
+              <p class="card-subtitle">Typing precision (%) across sessions</p>
+            </div>
+          </div>
+          <div class="chart-canvas-wrapper" style="position:relative; height:260px; width:100%;">
+            <canvas id="chart-accuracy-trend" aria-label="Accuracy Trend Chart" role="img"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 3: Speed by Difficulty -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Speed by Passage Difficulty</h2>
+              <p class="card-subtitle">Average Net WPM across difficulty tiers</p>
+            </div>
+          </div>
+          <div class="chart-canvas-wrapper" style="position:relative; height:260px; width:100%;">
+            <canvas id="chart-difficulty-wpm" aria-label="Difficulty Comparison Chart" role="img"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 4: Error Categories & Top Mistyped Keys (Full Width) -->
+        <div class="card analytics-chart-full">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Error Breakdown &amp; Mistake Patterns</h2>
+              <p class="card-subtitle">Distribution of uncorrected errors by category and recurring mistyped keys</p>
+            </div>
+          </div>
+          <div class="error-analytics-layout">
+            <div class="chart-canvas-wrapper" style="position:relative; height:250px; flex:1; min-width:280px;">
+              <canvas id="chart-error-breakdown" aria-label="Error Breakdown Chart" role="img"></canvas>
+            </div>
+            <div class="top-keys-panel" style="flex:1; min-width:240px;">
+              <p class="stat-label mb-2">Most Frequent Mistyped Characters</p>
+              <div id="analytics-top-keys-list" class="top-keys-list">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /analytics-grid -->
+
+      <!-- Rule-Based Insights preview inside Analytics Lab -->
+      <div class="mt-8">
+        <h2 class="section-title" style="font-size:var(--fs-lg); margin-bottom:var(--sp-2);">
+          Automated Insights &amp; Recommendations
+        </h2>
+        <p class="section-desc mb-4">Rule-based pattern detection generated purely from your real test data.</p>
+        <div class="insights-grid" id="analytics-insights-container">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </div>
+
+    </section><!-- /section-analytics -->
+
+
+    <!-- ────────────────────────────────────────────────────
+         SECTION 4 — SESSION HISTORY
+         ──────────────────────────────────────────────────── -->
+    <section class="section" id="section-history" hidden aria-labelledby="history-heading">
+
+      <div class="section-header">
+        <h1 class="section-title" id="history-heading">Session History</h1>
+        <p class="section-desc">Every typing test you complete is stored locally and listed here.</p>
+      </div>
+
+      <!-- Filter bar with difficulty, duration, and sort controls -->
+      <div class="history-filter-bar" role="group" aria-label="Filter and sort sessions">
+        <div class="history-filter-group">
+          <label class="filter-label" for="history-filter-difficulty">Difficulty:</label>
+          <select class="control-select" id="history-filter-difficulty" aria-label="Filter by difficulty">
+            <option value="all">All Difficulties</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+
+        <div class="history-filter-group">
+          <label class="filter-label" for="history-filter-duration">Duration:</label>
+          <select class="control-select" id="history-filter-duration" aria-label="Filter by duration">
+            <option value="all">All Durations</option>
+            <option value="30">30 s</option>
+            <option value="60">60 s</option>
+            <option value="120">120 s</option>
+          </select>
+        </div>
+
+        <div class="history-filter-group">
+          <label class="filter-label" for="history-filter-sort">Sort:</label>
+          <select class="control-select" id="history-filter-sort" aria-label="Sort sessions">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="wpm-high">Highest Net WPM</option>
+            <option value="wpm-low">Lowest Net WPM</option>
+            <option value="acc-high">Highest Accuracy</option>
+            <option value="acc-low">Lowest Accuracy</option>
+            <option value="dur-high">Duration (Longest)</option>
+            <option value="dur-low">Duration (Shortest)</option>
+          </select>
+        </div>
+
+        <div class="history-actions">
+          <span class="badge" id="history-count-badge">0 Sessions</span>
+          <button class="btn btn-secondary btn-sm" id="history-reset-btn" type="button" style="display:none;">Reset Filters</button>
+          <button class="btn btn-danger btn-sm" id="history-clear-btn" type="button">Clear All</button>
+        </div>
+      </div>
+
+      <!-- Sessions display card -->
+      <div class="card p-0" id="history-content-card">
+        <!-- Table container -->
+        <div class="table-scroll" id="history-table-container">
+          <table class="data-table" id="history-table" aria-label="Saved typing test sessions">
+            <thead>
+              <tr>
+                <th scope="col">Date &amp; Time</th>
+                <th scope="col">Net WPM</th>
+                <th scope="col">Gross WPM</th>
+                <th scope="col">Accuracy</th>
+                <th scope="col">Difficulty</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Errors</th>
+                <th scope="col" style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              <!-- Rendered dynamically by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty state (no sessions in storage) -->
+        <div class="empty-state" id="history-empty-state">
+          <div class="empty-state-icon" aria-hidden="true">📋</div>
+          <p class="empty-state-title">No sessions recorded</p>
+          <p class="empty-state-text">
+            Once you complete a typing test, each session will be listed here
+            with WPM, accuracy, difficulty, and duration. Your data is stored in
+            your browser's localStorage — nothing is sent to a server.
+          </p>
+          <button class="btn btn-primary btn-sm" id="history-take-test-btn" type="button">
+            Take your first test →
+          </button>
+        </div>
+
+        <!-- Filtered empty state (sessions exist but none match filter) -->
+        <div class="empty-state" id="history-filtered-empty" style="display:none;">
+          <div class="empty-state-icon" aria-hidden="true">🔍</div>
+          <p class="empty-state-title">No matching sessions</p>
+          <p class="empty-state-text">
+            No typing sessions match your selected difficulty or duration filters.
+          </p>
+          <button class="btn btn-secondary btn-sm" id="history-empty-reset-btn" type="button">
+            Reset Filters
+          </button>
+        </div>
+      </div>
+
+    </section><!-- /section-history -->
+
+
+    <!-- ────────────────────────────────────────────────────
+         SECTION 5 — INSIGHTS (Phase 5 Smart Insights Engine)
+         ──────────────────────────────────────────────────── -->
+    <section class="section" id="section-insights" hidden aria-labelledby="insights-heading">
+
+      <div class="section-header">
+        <h1 class="section-title" id="insights-heading">Intelligence &amp; Smart Insights</h1>
+        <p class="section-desc">
+          Automated performance diagnostics and actionable feedback calculated strictly from your real saved sessions.
+        </p>
+      </div>
+
+      <!-- Insights Control & Status Bar -->
+      <div class="history-filter-bar insights-status-bar" role="group" aria-label="Insights controls">
+        <div style="display:flex; align-items:center; gap:var(--sp-3); flex-wrap:wrap;">
+          <span class="badge" id="insights-analyzed-badge">0 Sessions Analyzed</span>
+          <span class="text-muted" style="font-size:var(--fs-xs);" id="insights-eval-time">Last evaluated: Just now</span>
+        </div>
+        <div class="history-actions">
+          <button class="btn btn-secondary btn-sm" id="insights-recalculate-btn" type="button" title="Recalculate insights from latest session data">
+            ⟳ Recalculate Insights
+          </button>
+        </div>
+      </div>
+
+      <!-- Typing Profile Banner -->
+      <div class="card mb-6" id="insights-persona-card">
+        <div class="persona-layout">
+          <div class="persona-icon-box" id="insights-persona-icon" aria-hidden="true">🧠</div>
+          <div class="persona-info">
+            <div style="display:flex; align-items:center; gap:var(--sp-2); margin-bottom:var(--sp-1); flex-wrap:wrap;">
+              <h2 class="persona-title" id="insights-persona-title">Typing Persona: Methodical Typist</h2>
+              <span class="badge badge-info" id="insights-persona-badge">Balanced Profile</span>
+            </div>
+            <p class="persona-desc" id="insights-persona-desc">
+              Complete your first typing test to unlock automated pattern analysis and personalized performance intelligence.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State (0 Sessions) -->
+      <div class="card" id="insights-empty-state" style="display:none;">
+        <div class="empty-state">
+          <div class="empty-state-icon" aria-hidden="true">💡</div>
+          <p class="empty-state-title">Insights Require Real Test Data</p>
+          <p class="empty-state-text">
+            Smart Insights evaluate your velocity trends, accuracy trade-offs, consistency variance,
+            stamina degradation, and error clusters. Take a test to activate automated intelligence.
+          </p>
+          <button class="btn btn-primary btn-sm" id="insights-take-test-btn" type="button">
+            Take your first test →
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Detailed Insights Grid -->
+      <div class="insights-detail-grid" id="insights-section-grid">
+        <!-- Rendered dynamically by js/app.js via InsightsEngine -->
+      </div>
+    </section><!-- /section-insights -->
+
+
+    <!-- ────────────────────────────────────────────────────
+         SECTION 7 — ADVANCED FEATURES
+         ──────────────────────────────────────────────────── -->
+    <section class="section" id="section-advanced" hidden aria-labelledby="advanced-heading">
+
+      <div class="section-header">
+        <h1 class="section-title" id="advanced-heading">Advanced Features</h1>
+        <p class="section-desc">
+          Deep diagnostics and targeted training tools built entirely from your real typing data.
+          All analysis runs locally — no data leaves your browser.
+        </p>
+      </div>
+
+      <!-- ── Feature 1: Keyboard Error Heatmap ───────────────── -->
+      <div class="card advanced-feature-card" id="advanced-heatmap-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">⌨️ &nbsp;Keyboard Error Heatmap</h2>
+            <p class="card-subtitle">
+              Visual map of your most frequently mistyped keys — aggregated from all your saved sessions.
+            </p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="heatmap-refresh-btn" type="button"
+                  title="Recalculate heatmap from current session data">
+            ↻ Refresh
+          </button>
+        </div>
+        <div id="heatmap-container">
+          <!-- Populated by HeatmapModule.render() in app.js -->
+          <div class="heatmap-empty-state">
+            <div class="heatmap-empty-icon" aria-hidden="true">⌨️</div>
+            <p class="heatmap-empty-title">Loading heatmap data…</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Feature 2: Typing Rhythm Analysis ───────────────── -->
+      <div class="card advanced-feature-card" id="advanced-rhythm-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">📉 &nbsp;Real-Time Typing Rhythm</h2>
+            <p class="card-subtitle">
+              WPM captured in 5-second windows throughout your last test — shows where you speed up or slow down.
+            </p>
+          </div>
+          <span class="badge badge-info" id="rhythm-session-badge">Last Test</span>
+        </div>
+
+        <!-- Rhythm stats row (peak, avg, low, trend) -->
+        <div id="rhythm-stats-container">
+          <!-- Populated by RhythmModule.renderStats() -->
+        </div>
+
+        <!-- Rhythm chart -->
+        <div class="chart-canvas-wrapper" style="position:relative; height:260px; width:100%; margin-top:var(--sp-4);">
+          <canvas id="chart-rhythm" aria-label="Typing rhythm chart — WPM per 5-second interval" role="img"></canvas>
+        </div>
+
+        <!-- Historical rhythm: pick a past session -->
+        <div class="rhythm-session-picker" id="rhythm-session-picker">
+          <label class="filter-label" for="rhythm-session-select">View rhythm from past session:</label>
+          <select class="control-select" id="rhythm-session-select" style="max-width:320px;">
+            <option value="__latest">Latest test (default)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ── Feature 3: Adaptive Practice Mode ───────────────── -->
+      <div class="card advanced-feature-card" id="advanced-adaptive-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">🎯 &nbsp;Adaptive Practice Mode</h2>
+            <p class="card-subtitle">
+              Targeted practice passages generated from your actual error patterns.
+              Focuses on the characters you miss most often.
+            </p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="adaptive-refresh-btn" type="button"
+                  title="Re-analyze sessions and update practice recommendations">
+            ↻ Refresh
+          </button>
+        </div>
+        <div id="adaptive-container">
+          <!-- Populated by AdaptiveModule.render() in app.js -->
+        </div>
+      </div>
+
+    </section><!-- /section-advanced -->
+
+
+    <!-- ────────────────────────────────────────────────────
+         SECTION 6 — SETTINGS
+         ──────────────────────────────────────────────────── -->
+    <section class="section" id="section-settings" hidden aria-labelledby="settings-heading">
+
+      <div class="section-header">
+        <h1 class="section-title" id="settings-heading">Settings</h1>
+        <p class="section-desc">Customise your TypeScope experience. Settings are saved to your browser.</p>
+      </div>
+
+      <div class="settings-layout">
+
+        <!-- Appearance -->
+        <div class="card">
+          <p class="settings-group-title">Appearance</p>
+          <div class="settings-group mt-4">
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <p class="setting-name">Theme</p>
+                <p class="setting-hint">Switch between dark and light mode</p>
+              </div>
+              <select class="control-select" id="setting-theme" aria-label="Theme selection">
+                <option value="dark" selected>Dark</option>
+                <option value="light">Light</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <p class="setting-name">Interface Font</p>
+                <p class="setting-hint">Font used across the dashboard</p>
+              </div>
+              <select class="control-select" id="setting-font" aria-label="Font selection">
+                <option value="inter" selected>Inter</option>
+                <option value="roboto">Roboto</option>
+                <option value="jetbrains">JetBrains Mono</option>
+              </select>
+            </div>
+
+          </div>
+        </div><!-- /Appearance -->
+
+        <!-- Test Preferences -->
+        <div class="card">
+          <p class="settings-group-title">Test Preferences</p>
+          <div class="settings-group mt-4">
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <p class="setting-name">Sound Effects</p>
+                <p class="setting-hint">Subtle audio feedback on keystrokes and completion</p>
+              </div>
+              <label class="toggle-switch" for="setting-sound" aria-label="Toggle sound effects">
+                <input type="checkbox" id="setting-sound" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <p class="setting-name">Auto-Save Sessions</p>
+                <p class="setting-hint">Always on — all sessions are stored locally</p>
+              </div>
+              <label class="toggle-switch" aria-label="Auto-save is always enabled">
+                <input type="checkbox" checked disabled />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+          </div>
+        </div><!-- /Test Preferences -->
+
+        <!-- Data Management (full width) -->
+        <div class="card" style="grid-column: 1 / -1;">
+          <p class="settings-group-title">Data Management</p>
+          <div class="mt-4">
+            <p class="setting-hint" style="margin-bottom: var(--sp-4); line-height: 1.7;">
+              TypeScope stores all session data in your browser's <code>localStorage</code>.
+              No data is sent to any external server. You can export or delete your data at any time.
+            </p>
+            <div class="settings-actions">
+              <button class="btn btn-primary" id="settings-save-btn" type="button">
+                💾&nbsp; Save Settings
+              </button>
+              <button class="btn btn-danger" id="settings-clear-btn" type="button">
+                🗑️&nbsp; Clear All Data
+              </button>
+            </div>
+          </div>
+        </div><!-- /Data Management -->
+
+        <!-- About (full width) -->
+        <div class="card" style="grid-column: 1 / -1;">
+          <p class="settings-group-title">About TypeScope</p>
+          <div class="mt-4" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:var(--sp-4);">
+            <div>
+              <p class="setting-name">Project</p>
+              <p class="setting-hint">Summer Internship Project (SIP) 2025-26</p>
+            </div>
+            <div>
+              <p class="setting-name">Branch</p>
+              <p class="setting-hint">Computer Engineering — S.Y. B.Tech</p>
+            </div>
+            <div>
+              <p class="setting-name">Courses</p>
+              <p class="setting-hint">JS Essentials 1 &amp; 2 · Data Analytics Essentials</p>
+            </div>
+            <div>
+              <p class="setting-name">Phase</p>
+              <p class="setting-hint">v1.0 (Final Submission)</p>
+            </div>
+          </div>
+        </div><!-- /About -->
+
+      </div><!-- /settings-layout -->
+    </section><!-- /section-settings -->
+
+
+  </main><!-- /main-content -->
+</div><!-- /app-shell -->
+
+<!-- ── Session Details Modal ─────────────────────────────── -->
+<div class="modal-backdrop" id="session-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title" id="modal-title">Session Details</h2>
+        <p class="modal-subtitle" id="modal-date">—</p>
+      </div>
+      <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Close modal">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-badges">
+        <span class="badge" id="modal-difficulty">Intermediate</span>
+        <span class="badge" id="modal-reason">Completed</span>
+        <span class="modal-passage-title" id="modal-passage-name">Passage</span>
+      </div>
+
+      <div class="modal-metrics-grid">
+        <div class="metric-mini-card">
+          <div class="metric-mini-label">Net Speed</div>
+          <div class="metric-mini-value" id="modal-net-wpm">0 WPM</div>
+        </div>
+        <div class="metric-mini-card">
+          <div class="metric-mini-label">Gross Speed</div>
+          <div class="metric-mini-value" id="modal-gross-wpm">0 WPM</div>
+        </div>
+        <div class="metric-mini-card">
+          <div class="metric-mini-label">Accuracy</div>
+          <div class="metric-mini-value" id="modal-accuracy">100%</div>
+        </div>
+        <div class="metric-mini-card">
+          <div class="metric-mini-label">Duration</div>
+          <div class="metric-mini-value" id="modal-duration">60s</div>
+        </div>
+      </div>
+
+      <div class="modal-details-table">
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Elapsed Time</span>
+          <span class="modal-detail-value" id="modal-elapsed">—</span>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Total Keystrokes</span>
+          <span class="modal-detail-value" id="modal-keystrokes">0</span>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Correct Characters</span>
+          <span class="modal-detail-value text-success" id="modal-correct">0</span>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Incorrect Characters</span>
+          <span class="modal-detail-value text-danger" id="modal-incorrect">0</span>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Uncorrected Errors</span>
+          <span class="modal-detail-value" id="modal-errors">0</span>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Session ID</span>
+          <span class="modal-detail-value text-mono" id="modal-id" style="font-size:0.75rem;">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="modal-delete-btn" type="button">Delete This Session</button>
+      <button class="btn btn-secondary btn-sm" id="modal-footer-close-btn" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile nav overlay -->
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+
+<!-- Toast container -->
+<div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+<!-- Screen-reader only utility -->
+<style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+
+<!-- ── Scripts ─────────────────────────────────────────────
+     Load order matters:
+       1. chart.umd.min.js — Chart.js library (with graceful fallback handling in charts.js)
+       2. passages.js      — defines PASSAGES, getRandomPassage()
+       3. metrics.js       — defines calcAllMetrics() (used by engine)
+       4. storage.js       — defines loadSessions(), addSession(), deleteSession(), etc.
+       5. analytics.js     — data filtering, stats aggregation, insights, CSV export
+       6. charts.js        — ChartManager rendering progression, accuracy, difficulty, error charts
+       7. insights.js      — InsightsEngine: rule-based observations, consistency, stamina, diagnostics
+       8. typing-engine.js — defines initEngine(), engineLoad*
+       9. app.js           — initializes views, nav, and dashboard wiring
+  ── -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="data/passages.js" defer></script>
+<script src="js/metrics.js" defer></script>
+<script src="js/storage.js" defer></script>
+<script src="js/analytics.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/insights.js" defer></script>
+<script src="js/heatmap.js" defer></script>
+<script src="js/rhythm.js" defer></script>
+<script src="js/adaptive.js" defer></script>
+<script src="js/typing-engine.js" defer></script>
+<script src="js/app.js" defer></script>
+
+</body>
+</html>

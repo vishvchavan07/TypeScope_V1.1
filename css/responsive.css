@@ -1,0 +1,226 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TypeScope — Responsive Stylesheet
+   css/responsive.css
+
+   Breakpoints:
+     lg  →  max-width: 1100px
+     md  →  max-width: 900px
+     sm  →  max-width: 640px
+     xs  →  max-width: 400px
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   LARGE SCREENS — sidebar and content adjust
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  :root {
+    --sidebar-width: 220px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .overview-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .test-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .insights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   MEDIUM SCREENS — collapse sidebar to mobile nav
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+
+  /* Switch to single-column layout */
+  .app-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--topbar-height) 1fr;
+    grid-template-areas:
+      "topbar"
+      "main";
+  }
+
+  /* Sidebar becomes a slide-in drawer */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
+    z-index: 200;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Mobile nav overlay becomes visible */
+  .nav-overlay {
+    display: block;
+  }
+
+  /* Show hamburger button */
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .topbar {
+    grid-area: topbar;
+    padding: 0 var(--sp-4);
+  }
+
+  .main-content {
+    padding: var(--sp-5) var(--sp-4);
+  }
+
+  .hero-title {
+    font-size: var(--fs-2xl);
+  }
+
+  .overview-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--sp-6);
+  }
+
+  .hero-art { display: none; }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .insights-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SMALL SCREENS — further compress layout
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+
+  .main-content {
+    padding: var(--sp-4) var(--sp-3);
+  }
+
+  .section-title {
+    font-size: var(--fs-xl);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+  }
+
+  .stat-value {
+    font-size: var(--fs-2xl);
+  }
+
+  .live-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .history-filter-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .settings-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .test-controls {
+    gap: var(--sp-3);
+  }
+
+  .overview-hero {
+    padding: var(--sp-5) var(--sp-4);
+  }
+
+  .hero-phase-badge {
+    font-size: 0.65rem;
+  }
+
+  .hero-courses {
+    gap: var(--sp-1);
+  }
+
+  .card {
+    padding: var(--sp-4);
+  }
+
+  #toast-container {
+    left: var(--sp-3);
+    right: var(--sp-3);
+    bottom: var(--sp-4);
+  }
+
+  .toast {
+    max-width: 100%;
+  }
+
+  .breadcrumb .breadcrumb-home,
+  .breadcrumb .breadcrumb-sep {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   EXTRA SMALL
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 400px) {
+  :root {
+    --fs-base: 0.9375rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-value {
+    font-size: var(--fs-xl);
+  }
+
+  .timer-display {
+    font-size: var(--fs-2xl);
+  }
+
+  .btn-lg {
+    padding: var(--sp-3) var(--sp-6);
+    font-size: var(--fs-sm);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PRINT
+   ───────────────────────────────────────────────────────────────────────────── */
+@media print {
+  .sidebar, .topbar, .hamburger-btn, #toast-container { display: none !important; }
+  .app-shell { display: block; }
+  .main-content { overflow: visible; padding: 0; }
+  .section { max-width: 100%; }
+}
